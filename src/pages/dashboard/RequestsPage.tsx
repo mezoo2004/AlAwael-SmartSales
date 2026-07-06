@@ -1,10 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, Filter, ChevronDown } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout';
-import { Card, Input, EmptyState } from '../../components/ui';
-import { mockRequests, requestStatuses, getStatusConfig, departments, getEmployeeById } from '../../data';
-import { RequestStatus } from '../../types';
+import { Card, EmptyState } from '../../components/ui';
+import { mockRequests, getStatusConfig, departments, getEmployeeById, requestStatuses } from '../../data';
 
 const RequestsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -13,7 +12,6 @@ const RequestsPage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || 'all');
   const [departmentFilter, setDepartmentFilter] = useState<string>('all');
-  const [showFilters, setShowFilters] = useState(false);
 
   const filteredRequests = useMemo(() => {
     let result = [...mockRequests];

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ArrowLeft, Check, Maximize2, Edit2, ChevronDown } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, Maximize2, Edit2 } from 'lucide-react';
 import { KioskLayout } from '../../components/layout';
 import { Button, Modal } from '../../components/ui';
 import { useSession } from '../../context/SessionContext';
@@ -9,7 +9,7 @@ import { GeneratedDesign, ModificationRequest } from '../../types';
 const DesignsPage: React.FC = () => {
   const navigate = useNavigate();
   const { session, selectDesign, addModification } = useSession();
-  const [designs, setDesigns] = useState(session?.generatedDesigns || []);
+  const [designs] = useState(session?.generatedDesigns || []);
   const [selectedDesignId, setSelectedDesignId] = useState<string | null>(null);
   const [showImageViewer, setShowImageViewer] = useState(false);
   const [viewingDesign, setViewingDesign] = useState<GeneratedDesign | null>(null);

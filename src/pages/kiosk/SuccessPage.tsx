@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
-import { CheckCircle, Home, Printer, ArrowLeft } from 'lucide-react';
+import { CheckCircle, Home, Printer } from 'lucide-react';
 import { GeometricStrip, GeometricBackground, GeometricCorner } from '../../components/patterns/GeometricPatterns';
 import { Button } from '../../components/ui';
 import { useSession } from '../../context/SessionContext';

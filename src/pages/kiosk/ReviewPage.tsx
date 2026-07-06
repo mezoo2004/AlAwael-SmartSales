@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Edit2, Image, FileText, Palette, Ruler, MapPin } from 'lucide-react';
 import { KioskLayout } from '../../components/layout';
 import { Button, Card } from '../../components/ui';
@@ -9,7 +9,7 @@ import { DepartmentId } from '../../types';
 
 const ReviewPage: React.FC = () => {
   const navigate = useNavigate();
-  const { session, setAnswer } = useSession();
+  const { session } = useSession();
 
   const department = session?.departmentId
     ? getDepartmentById(session.departmentId)

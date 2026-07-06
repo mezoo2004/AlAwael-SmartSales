@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, User, Phone, MapPin, Mail, Clock } from 'lucide-react';
 import { KioskLayout } from '../../components/layout';
-import { Button, Input, NumericKeypad } from '../../components/ui';
+import { Button, NumericKeypad } from '../../components/ui';
 import { useSession } from '../../context/SessionContext';
 import { ContactInfo, PreferredContactMethod } from '../../types';
 
@@ -27,7 +27,7 @@ const SaudiCities = [
 
 const ContactPage: React.FC = () => {
   const navigate = useNavigate();
-  const { session, setContactInfo, submitSession } = useSession();
+  const { setContactInfo, submitSession } = useSession();
 
   const [formData, setFormData] = useState<ContactInfo>({
     name: '',

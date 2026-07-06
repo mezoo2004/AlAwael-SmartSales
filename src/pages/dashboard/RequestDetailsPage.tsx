@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  ArrowRight, Phone, MessageCircle, Mail, MapPin, Clock, User, Calendar,
-  Edit2, Send, FileText, Eye, Download, CheckCircle
+  ArrowRight, Phone, MessageCircle, MapPin, Clock, User, Calendar,
+  Edit2, FileText, Eye, CheckCircle
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout';
-import { Card, Button, EmptyState, LoadingScreen } from '../../components/ui';
+import { Card, Button, EmptyState } from '../../components/ui';
 import { getRequestById, getStatusConfig, departments, getEmployeeById, getQuestionsByDepartment } from '../../data';
 import { DepartmentId } from '../../types';
 
@@ -32,9 +32,6 @@ const RequestDetailsPage: React.FC = () => {
   const employee = request.assignedEmployeeId
     ? getEmployeeById(request.assignedEmployeeId)
     : null;
-  const selectedDesign = request.generatedDesigns.find(
-    d => d.id === request.selectedDesignId
-  );
   const questions = getQuestionsByDepartment(request.departmentId as DepartmentId);
 
   const formatDate = (date: Date) => {

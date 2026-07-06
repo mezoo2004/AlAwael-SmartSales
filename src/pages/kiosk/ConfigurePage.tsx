@@ -30,13 +30,13 @@ const ConfigurePage: React.FC = () => {
         case 'not-equals':
           return parentAnswer !== q.conditional.value;
         case 'greater-than':
-          return typeof parentAnswer === 'number'
+          return typeof parentAnswer === 'number' && typeof q.conditional.value === 'number'
             ? parentAnswer > q.conditional.value
-            : parseFloat(parentAnswer as string) > q.conditional.value;
+            : parseFloat(String(parentAnswer)) > parseFloat(String(q.conditional.value));
         case 'less-than':
-          return typeof parentAnswer === 'number'
+          return typeof parentAnswer === 'number' && typeof q.conditional.value === 'number'
             ? parentAnswer < q.conditional.value
-            : parseFloat(parentAnswer as string) < q.conditional.value;
+            : parseFloat(String(parentAnswer)) < parseFloat(String(q.conditional.value));
         case 'contains':
           return Array.isArray(parentAnswer)
             ? parentAnswer.includes(q.conditional.value as string)

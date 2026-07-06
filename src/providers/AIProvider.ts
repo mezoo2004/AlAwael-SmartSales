@@ -29,7 +29,7 @@ const generationSteps = [
   'نجهّز التصاميم للعرض',
 ];
 
-class DemoAIProvider implements AIImageProvider {
+export class DemoAIProvider implements AIImageProvider {
   async generateDesigns(
     session: CustomerSession,
     onProgress?: AIProgressCallback
@@ -82,8 +82,6 @@ class DemoAIProvider implements AIImageProvider {
 
   private customizeDescription(baseDescription: string, session: CustomerSession): string {
     const style = session.answers?.design_style;
-    const color = session.answers?.marble_color || session.answers?.color;
-    const material = session.answers?.marble_pattern;
 
     let customized = baseDescription;
 

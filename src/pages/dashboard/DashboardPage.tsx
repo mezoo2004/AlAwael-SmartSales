@@ -1,10 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FileText, Clock, DollarSign, Phone, CheckCircle, AlertCircle, TrendingUp } from 'lucide-react';
+import { FileText, Clock, DollarSign, Phone, CheckCircle, TrendingUp } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout';
 import { Card } from '../../components/ui';
-import { mockRequests, requestStatuses, getStatusConfig, departments } from '../../data';
-import { RequestStatus } from '../../types';
+import { mockRequests, getStatusConfig, departments } from '../../data';
 
 const DashboardPage: React.FC = () => {
   const navigate = useNavigate();

@@ -1,11 +1,7 @@
-import React, { useEffect, useMemo, useCallback, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import { ArrowRight, ArrowLeft, Check } from 'lucide-react';
-import { KioskLayout } from '../layout';
 import { Button, ImageCard, ColorSwatch, TextArea, Input, NumericKeypad, ImageUpload, MultiImageUpload } from '../ui';
-import { useSession } from '../../context/SessionContext';
-import { getQuestionsByDepartment } from '../../data';
-import { Question, QuestionOption, Measurement } from '../../types';
+import { Question, Measurement } from '../../types';
 
 interface QuestionScreenProps {
   question: Question;
@@ -321,7 +317,7 @@ const YesNoQuestion: React.FC<{
   question: Question;
   value: boolean | undefined;
   onChange: (value: unknown) => void;
-}> = ({ question, value, onChange }) => (
+}> = ({ question: _question, value, onChange }) => (
   <div className="flex gap-6 justify-center">
     <Button
       variant={value === true ? 'primary' : 'secondary'}
@@ -379,7 +375,7 @@ const NumberQuestion: React.FC<{
   question: Question;
   value: number | undefined;
   onChange: (value: unknown) => void;
-}> = ({ question, value, onChange }) => {
+}> = ({ question: _question, value, onChange }) => {
   const [inputValue, setInputValue] = useState(value?.toString() || '');
 
   const handleKeypadChange = (val: string) => {
@@ -402,7 +398,7 @@ const MeasurementQuestion: React.FC<{
   question: Question;
   value: Measurement;
   onChange: (value: unknown) => void;
-}> = ({ question, value, onChange }) => {
+}> = ({ question: _question, value, onChange }) => {
   const updateField = (field: keyof Measurement, val: number | string) => {
     onChange({ ...value, [field]: val });
   };

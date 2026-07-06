@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Delete, Check } from 'lucide-react';
 
 interface NumericKeypadProps {
@@ -44,7 +44,7 @@ export const NumericKeypad: React.FC<NumericKeypadProps> = ({
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        {keys.map((row, rowIndex) =>
+        {keys.map((row) =>
           row.map((key) => (
             <button
               key={key}

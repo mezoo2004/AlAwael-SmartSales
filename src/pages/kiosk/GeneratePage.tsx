@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { KioskLayout } from '../../components/layout';
-import { LoadingScreen } from '../../components/ui';
 import { GeometricStrip } from '../../components/patterns/GeometricPatterns';
 import { useSession } from '../../context/SessionContext';
 import { aiProvider } from '../../providers';
@@ -10,13 +9,11 @@ const GeneratePage: React.FC = () => {
   const navigate = useNavigate();
   const { session, setGeneratedDesigns } = useSession();
   const [progress, setProgress] = useState({ step: 0, total: 5, message: '' });
-  const [isGenerating, setIsGenerating] = useState(true);
 
   useEffect(() => {
     const generate = async () => {
       if (!session) return;
 
-      setIsGenerating(true);
       try {
         const designs = await aiProvider.generateDesigns(session, (p) => {
           setProgress(p);
@@ -25,9 +22,6 @@ const GeneratePage: React.FC = () => {
         navigate('/kiosk/designs');
       } catch (error) {
         console.error('Generation failed:', error);
-        // Handle error
-      } finally {
-        setIsGenerating(false);
       }
     };
 
