@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bath, DoorOpen, Gem, LayoutGrid, Square, ArrowRight } from 'lucide-react';
 import { KioskLayout } from '../../components/layout';
@@ -16,15 +16,22 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 
 const DepartmentSelectionPage: React.FC = () => {
   const navigate = useNavigate();
-  const { setDepartment } = useSession();
+  const { session, setDepartment, isHydrated } = useSession();
+
+  useEffect(() => {
+    if (!isHydrated) return;
+    if (!session?.contactInfo) {
+      navigate('/kiosk/contact', { replace: true });
+    }
+  }, [isHydrated, session, navigate]);
 
   const handleSelect = (departmentId: DepartmentId) => {
     setDepartment(departmentId);
-    navigate(`/kiosk/configure/${departmentId}`);
+    navigate('/kiosk/budget');
   };
 
   return (
-    <KioskLayout currentStep={0}>
+    <KioskLayout currentStep={1}>
       <div className="flex-1 flex flex-col p-8">
         {/* Header */}
         <div className="text-center mb-10">

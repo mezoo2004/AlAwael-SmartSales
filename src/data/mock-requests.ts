@@ -8,11 +8,14 @@ export const mockRequests: SalesRequest[] = [
     departmentId: 'washbasins',
     contactInfo: {
       name: 'سعد العمري',
-      phone: '0509876543',
+      phone: '+966509876543',
       city: 'الرياض',
       neighborhood: 'النرجس',
       preferredContactMethod: 'whatsapp',
       requestMeasurementVisit: true,
+      privacyAccepted: true,
+      marketingConsent: false,
+      consentTextVersion: 'showroom_kiosk_v1',
       agreedToPrivacy: true,
     },
     answers: {
@@ -73,12 +76,15 @@ export const mockRequests: SalesRequest[] = [
     departmentId: 'wpc-doors',
     contactInfo: {
       name: 'فهد الدوسري',
-      phone: '0558765432',
+      phone: '+966558765432',
       city: 'الرياض',
       neighborhood: 'العرقة',
       email: 'fahad@email.com',
       preferredContactMethod: 'call',
       requestMeasurementVisit: false,
+      privacyAccepted: true,
+      marketingConsent: true,
+      consentTextVersion: 'showroom_kiosk_v1',
       agreedToPrivacy: true,
     },
     answers: {
@@ -134,11 +140,14 @@ export const mockRequests: SalesRequest[] = [
     departmentId: 'marble',
     contactInfo: {
       name: 'نورة الشمرة',
-      phone: '0547654321',
+      phone: '+966547654321',
       city: 'جدة',
       neighborhood: 'الحمراء',
       preferredContactMethod: 'whatsapp',
       requestMeasurementVisit: true,
+      privacyAccepted: true,
+      marketingConsent: false,
+      consentTextVersion: 'showroom_kiosk_v1',
       agreedToPrivacy: true,
     },
     answers: {

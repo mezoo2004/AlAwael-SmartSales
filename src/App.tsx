@@ -8,14 +8,19 @@ const WelcomePage = lazy(() => import('./pages/kiosk/WelcomePage'));
 const DepartmentSelectionPage = lazy(() => import('./pages/kiosk/DepartmentSelectionPage'));
 const ConfigurePage = lazy(() => import('./pages/kiosk/ConfigurePage'));
 const ReviewPage = lazy(() => import('./pages/kiosk/ReviewPage'));
+const RecommendationSummaryPage = lazy(() => import('./pages/kiosk/RecommendationSummaryPage'));
 const GeneratePage = lazy(() => import('./pages/kiosk/GeneratePage'));
 const DesignsPage = lazy(() => import('./pages/kiosk/DesignsPage'));
 const ContactPage = lazy(() => import('./pages/kiosk/ContactPage'));
+const BudgetIntelligencePage = lazy(() => import('./pages/kiosk/BudgetIntelligencePage'));
+const FinalReviewPage = lazy(() => import('./pages/kiosk/FinalReviewPage'));
 const SuccessPage = lazy(() => import('./pages/kiosk/SuccessPage'));
 
 const DashboardPage = lazy(() => import('./pages/dashboard/DashboardPage'));
 const RequestsPage = lazy(() => import('./pages/dashboard/RequestsPage'));
 const RequestDetailsPage = lazy(() => import('./pages/dashboard/RequestDetailsPage'));
+const IncompleteLeadsPage = lazy(() => import('./pages/dashboard/IncompleteLeadsPage'));
+const IncompleteLeadDetailsPage = lazy(() => import('./pages/dashboard/IncompleteLeadDetailsPage'));
 
 const App: React.FC = () => {
   return (
@@ -26,18 +31,23 @@ const App: React.FC = () => {
             {/* Kiosk Routes */}
             <Route path="/" element={<Navigate to="/kiosk" replace />} />
             <Route path="/kiosk" element={<WelcomePage />} />
+            <Route path="/kiosk/contact" element={<ContactPage />} />
+            <Route path="/kiosk/budget" element={<BudgetIntelligencePage />} />
             <Route path="/kiosk/departments" element={<DepartmentSelectionPage />} />
             <Route path="/kiosk/configure/:departmentId" element={<ConfigurePage />} />
             <Route path="/kiosk/review" element={<ReviewPage />} />
+            <Route path="/kiosk/recommendation-summary" element={<RecommendationSummaryPage />} />
             <Route path="/kiosk/generate" element={<GeneratePage />} />
             <Route path="/kiosk/designs" element={<DesignsPage />} />
-            <Route path="/kiosk/contact" element={<ContactPage />} />
+            <Route path="/kiosk/final-review" element={<FinalReviewPage />} />
             <Route path="/kiosk/success" element={<SuccessPage />} />
 
             {/* Dashboard Routes */}
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/dashboard/requests" element={<RequestsPage />} />
             <Route path="/dashboard/requests/:id" element={<RequestDetailsPage />} />
+            <Route path="/dashboard/incomplete-leads" element={<IncompleteLeadsPage />} />
+            <Route path="/dashboard/incomplete-leads/:id" element={<IncompleteLeadDetailsPage />} />
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/kiosk" replace />} />

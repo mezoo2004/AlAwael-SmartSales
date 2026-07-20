@@ -1,0 +1,373 @@
+{
+  "dimensionsGateQuestionId": "dimensions_known",
+  "measurementQuestionId": "measurements",
+  "legacyMeasurementQuestionIds": [
+    "unknown_measurements",
+    "measurement_visit",
+    "measurements"
+  ],
+  "productSelectionQuestionIds": {
+    "washbasins": "service_type",
+    "wpc-doors": "door_type",
+    "marble": "stone_type",
+    "aluminum": "product_type",
+    "glass": "product_type"
+  },
+  "injectedQuestions": {
+    "dimensionsGate": {
+      "id": "dimensions_known",
+      "title": "هل تعرف المقاسات؟",
+      "subtitle": "يمكنك إدخال المقاسات الآن أو تخطيها وسيقوم فريقنا بقياس الموقع لاحقاً.",
+      "type": "visual-cards",
+      "required": true,
+      "order": 0,
+      "options": [
+        {
+          "id": "known",
+          "label": "📏 أعرف المقاسات",
+          "value": "known",
+          "description": "سأقوم بإدخال الطول والعرض الآن."
+        },
+        {
+          "id": "unknown",
+          "label": "📍 لا أعرف المقاسات",
+          "value": "unknown",
+          "description": "سنتجاوز هذه الخطوة وسيقوم فريقنا بقياس الموقع لاحقاً."
+        }
+      ]
+    },
+    "doorGlassType": {
+      "id": "glass_type",
+      "departmentId": "wpc-doors",
+      "title": "نوع الزجاج",
+      "subtitle": "اختر نوع الزجاج",
+      "type": "visual-cards",
+      "required": true,
+      "order": 0,
+      "options": [
+        {
+          "id": "clear",
+          "label": "شفاف",
+          "value": "clear"
+        },
+        {
+          "id": "tinted",
+          "label": "ملون",
+          "value": "tinted"
+        },
+        {
+          "id": "reflective",
+          "label": "عاكس",
+          "value": "reflective"
+        },
+        {
+          "id": "low-e",
+          "label": "Low-E",
+          "value": "low-e"
+        },
+        {
+          "id": "double",
+          "label": "مزودج",
+          "value": "double"
+        },
+        {
+          "id": "triple",
+          "label": "ثلاثي",
+          "value": "triple"
+        }
+      ]
+    }
+  },
+  "branching": {
+    "dimensions": {
+      "knownValue": "known"
+    },
+    "doorGlassType": {
+      "departmentId": "wpc-doors",
+      "triggerQuestionId": "door_design",
+      "triggerValue": "glass-insert",
+      "questionKey": "doorGlassType"
+    },
+    "aluminumGlassType": {
+      "departmentId": "aluminum",
+      "questionId": "glass_type",
+      "sourceQuestionId": "product_type",
+      "relevantValues": [
+        "windows",
+        "doors",
+        "facades",
+        "partitions"
+      ]
+    }
+  },
+  "dependencies": [],
+  "recommendations": [
+    {
+      "id": "global-budget-skip-duplicate-budget-question",
+      "conditions": [
+        {
+          "questionId": "budget_intelligence",
+          "operator": "exists"
+        }
+      ],
+      "skipQuestionIds": [
+        "budget"
+      ]
+    },
+    {
+      "id": "low-budget-washbasins-skip-premium-details",
+      "departmentId": "washbasins",
+      "conditions": [
+        {
+          "questionId": "budget_intelligence",
+          "operator": "equals",
+          "value": "under-5000"
+        }
+      ],
+      "skipQuestionIds": [
+        "mirror_lighting",
+        "accessories_finish",
+        "general_lighting"
+      ]
+    },
+    {
+      "id": "entry-budget-washbasins-skip-premium-details",
+      "departmentId": "washbasins",
+      "conditions": [
+        {
+          "questionId": "budget_intelligence",
+          "operator": "equals",
+          "value": "5000-10000"
+        }
+      ],
+      "skipQuestionIds": [
+        "general_lighting"
+      ]
+    },
+    {
+      "id": "low-budget-wpc-skip-luxury-details",
+      "departmentId": "wpc-doors",
+      "conditions": [
+        {
+          "questionId": "budget_intelligence",
+          "operator": "equals",
+          "value": "under-5000"
+        }
+      ],
+      "skipQuestionIds": [
+        "frame_color",
+        "handle_finish",
+        "sound_insulation",
+        "lock_type"
+      ]
+    },
+    {
+      "id": "low-budget-marble-skip-premium-finish-details",
+      "departmentId": "marble",
+      "conditions": [
+        {
+          "questionId": "budget_intelligence",
+          "operator": "equals",
+          "value": "under-5000"
+        }
+      ],
+      "skipQuestionIds": [
+        "veining",
+        "finish",
+        "thickness"
+      ]
+    },
+    {
+      "id": "entry-budget-marble-skip-extra-finish-details",
+      "departmentId": "marble",
+      "conditions": [
+        {
+          "questionId": "budget_intelligence",
+          "operator": "equals",
+          "value": "5000-10000"
+        }
+      ],
+      "skipQuestionIds": [
+        "thickness"
+      ]
+    },
+    {
+      "id": "low-budget-aluminum-skip-upgrade-details",
+      "departmentId": "aluminum",
+      "conditions": [
+        {
+          "questionId": "budget_intelligence",
+          "operator": "equals",
+          "value": "under-5000"
+        }
+      ],
+      "skipQuestionIds": [
+        "glass_type",
+        "insulation"
+      ]
+    },
+    {
+      "id": "low-budget-glass-skip-premium-details",
+      "departmentId": "glass",
+      "conditions": [
+        {
+          "questionId": "budget_intelligence",
+          "operator": "equals",
+          "value": "under-5000"
+        }
+      ],
+      "skipQuestionIds": [
+        "glass_finish",
+        "hardware_finish",
+        "privacy_level"
+      ]
+    },
+    {
+      "id": "washbasin-marble-only-skip-non-marble-details",
+      "departmentId": "washbasins",
+      "conditions": [
+        {
+          "questionId": "service_type",
+          "operator": "equals",
+          "value": "marble-only"
+        }
+      ],
+      "skipQuestionIds": [
+        "cabinet_config",
+        "cabinet_color",
+        "mirror_type",
+        "mirror_lighting",
+        "faucet_type",
+        "accessories_finish",
+        "general_lighting"
+      ]
+    },
+    {
+      "id": "washbasin-cabinets-only-skip-marble-and-plumbing-details",
+      "departmentId": "washbasins",
+      "conditions": [
+        {
+          "questionId": "service_type",
+          "operator": "equals",
+          "value": "cabinets-only"
+        }
+      ],
+      "skipQuestionIds": [
+        "marble_color",
+        "marble_pattern",
+        "mirror_type",
+        "mirror_lighting",
+        "faucet_type",
+        "accessories_finish",
+        "general_lighting"
+      ]
+    },
+    {
+      "id": "washbasin-no-cabinets-skip-cabinet-color",
+      "departmentId": "washbasins",
+      "conditions": [
+        {
+          "questionId": "cabinet_config",
+          "operator": "equals",
+          "value": "no-cabinets"
+        }
+      ],
+      "skipQuestionIds": [
+        "cabinet_color"
+      ]
+    },
+    {
+      "id": "washbasin-no-mirror-skip-mirror-lighting",
+      "departmentId": "washbasins",
+      "conditions": [
+        {
+          "questionId": "mirror_type",
+          "operator": "equals",
+          "value": "none"
+        }
+      ],
+      "skipQuestionIds": [
+        "mirror_lighting"
+      ]
+    },
+    {
+      "id": "wpc-non-bathroom-skip-moisture-resistance",
+      "departmentId": "wpc-doors",
+      "conditions": [
+        {
+          "questionId": "door_type",
+          "operator": "exists"
+        },
+        {
+          "questionId": "door_type",
+          "operator": "not-equals",
+          "value": "bathroom"
+        }
+      ],
+      "skipQuestionIds": [
+        "moisture_resistance"
+      ]
+    },
+    {
+      "id": "aluminum-kitchens-skip-glass-and-opening-details",
+      "departmentId": "aluminum",
+      "conditions": [
+        {
+          "questionId": "product_type",
+          "operator": "equals",
+          "value": "kitchens"
+        }
+      ],
+      "skipQuestionIds": [
+        "glass_type",
+        "insulation",
+        "opening_method"
+      ]
+    },
+    {
+      "id": "aluminum-other-skip-product-specific-details",
+      "departmentId": "aluminum",
+      "conditions": [
+        {
+          "questionId": "product_type",
+          "operator": "equals",
+          "value": "other"
+        }
+      ],
+      "skipQuestionIds": [
+        "glass_type",
+        "insulation",
+        "opening_method"
+      ]
+    },
+    {
+      "id": "glass-mirror-skip-hardware-and-privacy",
+      "departmentId": "glass",
+      "conditions": [
+        {
+          "questionId": "product_type",
+          "operator": "equals",
+          "value": "mirror"
+        }
+      ],
+      "skipQuestionIds": [
+        "hardware_finish",
+        "privacy_level"
+      ]
+    },
+    {
+      "id": "glass-railing-skip-privacy",
+      "departmentId": "glass",
+      "conditions": [
+        {
+          "questionId": "product_type",
+          "operator": "equals",
+          "value": "railing"
+        }
+      ],
+      "skipQuestionIds": [
+        "privacy_level"
+      ]
+    }
+  ]
+}

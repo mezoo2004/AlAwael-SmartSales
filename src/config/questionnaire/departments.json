@@ -1,0 +1,42 @@
+[
+  {
+    "id": "washbasins",
+    "name": "المغاسل",
+    "description": "صمّم وحدة مغاسل متكاملة حسب المساحة والذوق والخامات المناسبة.",
+    "icon": "bath",
+    "image": "/images/premium-demo/washbasins-showroom.png",
+    "order": 1
+  },
+  {
+    "id": "wpc-doors",
+    "name": "أبواب WPC",
+    "description": "اختر تصميم الباب واللون والمقاس والإكسسوارات التي تناسب مشروعك.",
+    "icon": "door-open",
+    "image": "/images/premium-demo/wpc-door-showroom.png",
+    "order": 2
+  },
+  {
+    "id": "marble",
+    "name": "الرخام",
+    "description": "حدّد الاستخدام واللون والنمط والتشطيب للحصول على تصور مناسب.",
+    "icon": "gem",
+    "image": "/images/premium-demo/marble-showroom.png",
+    "order": 3
+  },
+  {
+    "id": "aluminum",
+    "name": "الألمنيوم",
+    "description": "اختر النوافذ أو الأبواب أو الواجهات مع خيارات العزل والزجاج.",
+    "icon": "layout-grid",
+    "image": "/images/premium-demo/aluminum-showroom.png",
+    "order": 4
+  },
+  {
+    "id": "glass",
+    "name": "الزجاج",
+    "description": "صمم واجهات أو قواطع أو شاورات أو مرايا حسب متطلباتك.",
+    "icon": "square",
+    "image": "/images/premium-demo/glass-showroom.png",
+    "order": 5
+  }
+]

@@ -7,6 +7,7 @@ import {
   LogOut,
   Menu,
   X,
+  UserX,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -17,6 +18,7 @@ interface DashboardLayoutProps {
 const sidebarItems = [
   { id: 'dashboard', label: 'لوحة التحكم', icon: LayoutDashboard, path: '/dashboard' },
   { id: 'requests', label: 'الطلبات', icon: FileText, path: '/dashboard/requests' },
+  { id: 'incomplete', label: 'عملاء لم يكملوا الطلب', icon: UserX, path: '/dashboard/incomplete-leads' },
   { id: 'settings', label: 'الإعدادات', icon: Settings, path: '/dashboard/settings' },
 ];
 

@@ -1,5 +1,5 @@
 // Department Types
-export type DepartmentId = 'washbasins' | 'wpc-doors' | 'marble' | 'aluminum' | 'glass';
+export type DepartmentId = string;
 
 export interface Department {
   id: DepartmentId;
@@ -96,10 +96,22 @@ export interface GeneratedDesign {
   modifications?: GeneratedDesign[];
 }
 
+export type JourneyStep =
+  | 'started'
+  | 'customer_information_completed'
+  | 'department_selected'
+  | 'questionnaire_in_progress'
+  | 'review'
+  | 'designs_generated'
+  | 'design_selected'
+  | 'final_review'
+  | 'request_submitted';
+
 export interface CustomerSession {
   id: string;
   departmentId: DepartmentId | null;
   currentStep: number;
+  journeyStep: JourneyStep;
   answers: Record<string, unknown>;
   measurements: Measurement;
   uploadedImages: UploadedImage[];
@@ -107,6 +119,11 @@ export interface CustomerSession {
   selectedDesignId: string | null;
   modificationHistory: ModificationRequest[];
   contactInfo: ContactInfo | null;
+  /** Remote Supabase customer UUID */
+  customerId: string | null;
+  /** Remote Supabase lead_sessions UUID */
+  leadSessionId: string | null;
+  remoteLeadStatus: 'incomplete' | 'completed' | null;
   status: 'in-progress' | 'submitted' | 'completed';
   createdAt: Date;
   updatedAt: Date;
@@ -117,14 +134,21 @@ export type PreferredContactMethod = 'call' | 'whatsapp' | 'sms';
 
 export interface ContactInfo {
   name: string;
+  /** Stored in E.164 (+9665XXXXXXXX) after save */
   phone: string;
-  city: string;
+  city?: string;
+  preferredContactMethod?: PreferredContactMethod;
+  privacyAccepted: boolean;
+  marketingConsent: boolean;
+  consentTimestamp?: string;
+  consentTextVersion: string;
+  /** Legacy optional fields kept for mock dashboard requests */
   neighborhood?: string;
   email?: string;
-  preferredContactMethod: PreferredContactMethod;
   preferredContactTime?: string;
-  requestMeasurementVisit: boolean;
-  agreedToPrivacy: boolean;
+  requestMeasurementVisit?: boolean;
+  /** @deprecated use privacyAccepted */
+  agreedToPrivacy?: boolean;
 }
 
 // Sales Request Types

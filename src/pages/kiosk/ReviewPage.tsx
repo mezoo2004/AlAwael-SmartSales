@@ -24,7 +24,7 @@ const ReviewPage: React.FC = () => {
   };
 
   const handleGenerate = () => {
-    navigate('/kiosk/generate');
+    navigate('/kiosk/recommendation-summary');
   };
 
   // Group answers by category
@@ -60,7 +60,7 @@ const ReviewPage: React.FC = () => {
   };
 
   return (
-    <KioskLayout currentStep={3}>
+    <KioskLayout currentStep={4}>
       <div className="flex-1 p-8">
         <div className="max-w-5xl mx-auto">
           {/* Header */}

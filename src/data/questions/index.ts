@@ -1,17 +1,14 @@
 import { DepartmentId, Question } from '../../types';
-import washbasinQuestions from './washbasins';
-import wpcDoorQuestions from './wpc-doors';
-import marbleQuestions from './marble';
-import aluminumQuestions from './aluminum';
-import glassQuestions from './glass';
+import questionsConfig from '../../config/questionnaire/questions.json';
 
-export const questions: Record<DepartmentId, Question[]> = {
-  washbasins: washbasinQuestions,
-  'wpc-doors': wpcDoorQuestions,
-  marble: marbleQuestions,
-  aluminum: aluminumQuestions,
-  glass: glassQuestions,
-};
+const sortQuestions = (questionList: Question[]): Question[] => (
+  [...questionList].sort((a, b) => a.order - b.order)
+);
+
+export const questions: Record<DepartmentId, Question[]> = Object.fromEntries(
+  Object.entries(questionsConfig as Record<string, Question[]>)
+    .map(([departmentId, questionList]) => [departmentId, sortQuestions(questionList)])
+);
 
 export const getQuestionsByDepartment = (departmentId: DepartmentId): Question[] => {
   return questions[departmentId] || [];
@@ -22,4 +19,8 @@ export const getQuestionById = (departmentId: DepartmentId, questionId: string):
   return deptQuestions?.find((q) => q.id === questionId);
 };
 
-export { washbasinQuestions, wpcDoorQuestions, marbleQuestions, aluminumQuestions, glassQuestions };
+export const washbasinQuestions = questions.washbasins || [];
+export const wpcDoorQuestions = questions['wpc-doors'] || [];
+export const marbleQuestions = questions.marble || [];
+export const aluminumQuestions = questions.aluminum || [];
+export const glassQuestions = questions.glass || [];

@@ -33,12 +33,12 @@ const DesignsPage: React.FC = () => {
 
   const handleConfirmSelection = () => {
     if (selectedDesignId) {
-      navigate('/kiosk/contact');
+      navigate('/kiosk/final-review');
     }
   };
 
   return (
-    <KioskLayout currentStep={3}>
+    <KioskLayout currentStep={4}>
       <div className="flex-1 p-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}

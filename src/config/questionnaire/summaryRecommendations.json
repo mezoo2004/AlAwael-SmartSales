@@ -1,0 +1,527 @@
+[
+  {
+    "id": "wpc-bedroom-modern-white",
+    "departmentId": "wpc-doors",
+    "priority": 100,
+    "conditions": [
+      {
+        "questionId": "door_type",
+        "operator": "equals",
+        "value": "bedroom"
+      },
+      {
+        "questionId": "design_style",
+        "operator": "equals",
+        "value": "modern"
+      },
+      {
+        "questionId": "door_color",
+        "operator": "equals",
+        "value": "white"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "باب WPC مودرن بتشطيب مطفي لغرفة النوم مع مفصلات مخفية ومقبض أسود مطفي.",
+      "shortDescription": "حل مودرن هادئ يجمع بين اللون الأبيض والتفاصيل السوداء الفاخرة.",
+      "whySelected": "تم اختيار هذا الحل لأنه ينسجم مع موقع غرفة النوم، والأسلوب المودرن، وتفضيل اللون الأبيض، مع الحفاظ على مظهر أنيق وهادئ.",
+      "keyBenefits": [
+        "مظهر مودرن راقٍ",
+        "سهل الصيانة",
+        "مقاوم للرطوبة",
+        "مناسب لغرف النوم"
+      ],
+      "complementaryRecommendations": [
+        "مقبض بتشطيب أسود مطفي",
+        "إطار مخفي لانتقال أنظف مع الجدار"
+      ]
+    }
+  },
+  {
+    "id": "marble-kitchen-natural",
+    "departmentId": "marble",
+    "priority": 90,
+    "conditions": [
+      {
+        "questionId": "usage",
+        "operator": "contains",
+        "value": "kitchen"
+      },
+      {
+        "questionId": "stone_type",
+        "operator": "equals",
+        "value": "natural"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "سطح رخام طبيعي بتشطيب مصقول ومتين مناسب لاستخدامات المطبخ.",
+      "shortDescription": "اختيار طبيعي فاخر مناسب للمطبخ والاستخدام اليومي.",
+      "whySelected": "اختيار المطبخ مع تفضيل الحجر الطبيعي يشير إلى حل فاخر يجمع بين الجمال العملي والاستخدام اليومي.",
+      "keyBenefits": [
+        "مظهر طبيعي فاخر",
+        "حضور بصري قوي",
+        "مناسب لأسطح المطابخ",
+        "يعزز قيمة المكان على المدى الطويل"
+      ],
+      "complementaryRecommendations": [
+        "حافة شلالية بتفصيل أنيق",
+        "رخام خلفي مطابق للسطح"
+      ]
+    }
+  },
+  {
+    "id": "aluminum-kitchen",
+    "departmentId": "aluminum",
+    "priority": 80,
+    "conditions": [
+      {
+        "questionId": "product_type",
+        "operator": "equals",
+        "value": "kitchens"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "نظام مطبخ ألمنيوم مخصص بلون إطار أنيق وتشطيب سطح عالي التحمل.",
+      "shortDescription": "نظام عملي طويل العمر لمطبخ مودرن قليل الصيانة.",
+      "whySelected": "اختيار مطبخ الألمنيوم يناسب حلًا عمليًا قليل الصيانة يتحمل الاستخدام اليومي ويحافظ على مظهر مودرن.",
+      "keyBenefits": [
+        "تحمل عالٍ",
+        "سهل التنظيف",
+        "مظهر مطبخ مودرن",
+        "مقاومة جيدة للرطوبة"
+      ],
+      "complementaryRecommendations": [
+        "إكسسوارات إغلاق ناعم",
+        "إضاءة LED عملية مدمجة"
+      ]
+    }
+  },
+  {
+    "id": "glass-mirror",
+    "departmentId": "glass",
+    "priority": 80,
+    "conditions": [
+      {
+        "questionId": "product_type",
+        "operator": "equals",
+        "value": "mirror"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "مرآة مخصصة فاخرة بحواف نظيفة وتشطيب تركيب أنيق.",
+      "shortDescription": "مرآة تفصيلية تمنح المساحة إشراقًا ومظهرًا أنيقًا.",
+      "whySelected": "اختيار المرآة يستفيد من المقاس المخصص والتشطيب البسيط الذي يمنح النتيجة مظهرًا راقيًا يدوم طويلًا.",
+      "keyBenefits": [
+        "مظهر نظيف وفاخر",
+        "مقاس مخصص للمساحة",
+        "يساعد على إضاءة المكان بصريًا",
+        "سهل العناية"
+      ],
+      "complementaryRecommendations": [
+        "إضاءة خلفية LED مخفية",
+        "معالجة مقاومة للضباب عند الاستخدام في الحمامات"
+      ]
+    }
+  },
+  {
+    "id": "washbasin-modern",
+    "departmentId": "washbasins",
+    "priority": 70,
+    "conditions": [
+      {
+        "questionId": "design_style",
+        "operator": "equals",
+        "value": "modern"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "وحدة مغاسل مودرن مخصصة بتناسق بين الرخام والخزائن وتشطيبات الإكسسوارات.",
+      "shortDescription": "وحدة متكاملة بخطوط نظيفة وخامات متناسقة.",
+      "whySelected": "الاتجاه المودرن يناسب الخطوط النظيفة، والتخزين المدمج، وتناسق الخامات والتشطيبات.",
+      "keyBenefits": [
+        "مظهر مودرن نظيف",
+        "تخزين عملي للاستخدام اليومي",
+        "تناغم بين الخامات",
+        "تصميم مخصص للمساحة"
+      ],
+      "complementaryRecommendations": [
+        "مرآة بإضاءة خلفية",
+        "خلاط جداري لسطح أكثر نظافة"
+      ]
+    }
+  },
+  {
+    "id": "wpc-default",
+    "departmentId": "wpc-doors",
+    "priority": 10,
+    "conditions": [],
+    "recommendation": {
+      "recommendedProduct": "باب WPC مخصص متوافق مع اختيارات التصميم واللون والإطار والإكسسوارات.",
+      "shortDescription": "حل مرن للأبواب يمكن تخصيصه حسب الموقع والتشطيب.",
+      "whySelected": "يعد WPC حلًا عمليًا للأبواب ويمكن تخصيصه حسب الموقع والتشطيب المطلوب.",
+      "keyBenefits": [
+        "مناسب للاستخدام اليومي",
+        "سهل الصيانة",
+        "خيارات تصميم مرنة",
+        "مناسب للمشاريع السكنية"
+      ],
+      "complementaryRecommendations": [
+        "لون إطار متناسق",
+        "تشطيب مقبض مطابق"
+      ]
+    }
+  },
+  {
+    "id": "wpc-economical-practical",
+    "departmentId": "wpc-doors",
+    "priority": 9,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "under-5000"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "باب WPC عملي بتصميم بسيط وتشطيب اقتصادي مناسب للاستخدام اليومي.",
+      "shortDescription": "خيار اقتصادي يركز على المتانة وسهولة الصيانة.",
+      "whySelected": "يناسب الميزانية المنخفضة ويقلل التفاصيل الفاخرة مع الحفاظ على جودة الباب الأساسية.",
+      "keyBenefits": [
+        "تكلفة مناسبة",
+        "صيانة سهلة",
+        "تصميم بسيط",
+        "مناسب للاستخدام المتكرر"
+      ],
+      "complementaryRecommendations": [
+        "مقبض قياسي متين",
+        "لون إطار مطابق للباب"
+      ]
+    }
+  },
+  {
+    "id": "wpc-luxury-custom",
+    "departmentId": "wpc-doors",
+    "priority": 8,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "over-50000"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "باب WPC فاخر بتفاصيل مخصصة وإكسسوارات عالية الجودة.",
+      "shortDescription": "حل فاخر لمن يريد أعلى مستوى من التخصيص والتشطيب.",
+      "whySelected": "الميزانية المرتفعة تسمح بإضافة تفاصيل خاصة وإكسسوارات أفخم دون التضحية بالمتانة.",
+      "keyBenefits": [
+        "تخصيص أعلى",
+        "تشطيب فاخر",
+        "إكسسوارات مميزة",
+        "مظهر معماري راقٍ"
+      ],
+      "complementaryRecommendations": [
+        "قفل ذكي",
+        "إطار مخفي"
+      ]
+    }
+  },
+  {
+    "id": "marble-default",
+    "departmentId": "marble",
+    "priority": 10,
+    "conditions": [],
+    "recommendation": {
+      "recommendedProduct": "اختيار حجر مخصص بناءً على الاستخدام واللون والعروق والتشطيب المحدد.",
+      "shortDescription": "حل حجري مخصص يوازن بين الخامة والمظهر والاستخدام.",
+      "whySelected": "تساعد اختيارات الحجر على مواءمة السطح مع موقع المشروع والطابع البصري المطلوب.",
+      "keyBenefits": [
+        "مظهر خامة فاخر",
+        "تشطيب قابل للتخصيص",
+        "تأثير تصميمي قوي",
+        "مناسب للتركيبات المخصصة"
+      ],
+      "complementaryRecommendations": [
+        "توزيع ألواح متناظر",
+        "بروفايل حافة متناسق"
+      ]
+    }
+  },
+  {
+    "id": "marble-economical-engineered",
+    "departmentId": "marble",
+    "priority": 9,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "under-5000"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "حجر صناعي اقتصادي بتشطيب عملي ومظهر متناسق.",
+      "shortDescription": "بديل اقتصادي يمنح مظهر الحجر مع تحكم أفضل في التكلفة.",
+      "whySelected": "يناسب الميزانية المنخفضة ويقدم حلًا عمليًا عندما تكون الأولوية للتكلفة والمتانة.",
+      "keyBenefits": [
+        "تكلفة أقل",
+        "مظهر متناسق",
+        "سهل الصيانة",
+        "مناسب للمساحات العملية"
+      ],
+      "complementaryRecommendations": [
+        "لون محايد",
+        "تشطيب مطفي عملي"
+      ]
+    }
+  },
+  {
+    "id": "marble-luxury-imported",
+    "departmentId": "marble",
+    "priority": 8,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "over-50000"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "رخام طبيعي فاخر بعروق مميزة وتشطيب مخصص.",
+      "shortDescription": "اختيار فاخر يركز على قوة الحضور البصري والخامة الطبيعية.",
+      "whySelected": "الميزانية المرتفعة تسمح باختيار خامات طبيعية أرقى وتفاصيل تنفيذ أكثر تميزًا.",
+      "keyBenefits": [
+        "خامة طبيعية فاخرة",
+        "عروق مميزة",
+        "تشطيب مخصص",
+        "قيمة جمالية عالية"
+      ],
+      "complementaryRecommendations": [
+        "تنسيق ألواح متناظر",
+        "حافة مخصصة"
+      ]
+    }
+  },
+  {
+    "id": "washbasin-default",
+    "departmentId": "washbasins",
+    "priority": 10,
+    "conditions": [],
+    "recommendation": {
+      "recommendedProduct": "حل مغاسل مخصص بناءً على نوع الخدمة والموقع والخامات والأسلوب المختار.",
+      "shortDescription": "حل متوازن يجمع عناصر المغاسل حسب احتياج المساحة.",
+      "whySelected": "تساعد الاختيارات الحالية على تنسيق السطح والخزائن والمرآة والإضاءة والإكسسوارات بالشكل الأنسب.",
+      "keyBenefits": [
+        "مصمم حسب الموقع المختار",
+        "توازن بين التخزين والمظهر",
+        "تشطيبات متناسقة",
+        "جاهز لإنشاء تصميم مخصص"
+      ],
+      "complementaryRecommendations": [
+        "إضاءة مرآة متناسقة",
+        "تشطيب إكسسوارات موحد"
+      ]
+    }
+  },
+  {
+    "id": "washbasin-economical-clean",
+    "departmentId": "washbasins",
+    "priority": 9,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "under-5000"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "وحدة مغاسل عملية بتصميم نظيف وخامات اقتصادية متناسقة.",
+      "shortDescription": "حل عملي يوازن بين الشكل الجيد والتكلفة المناسبة.",
+      "whySelected": "يناسب الميزانية المنخفضة ويركز على العناصر الأساسية دون إضافات فاخرة غير ضرورية.",
+      "keyBenefits": [
+        "تكلفة مناسبة",
+        "تصميم مرتب",
+        "سهولة تنظيف",
+        "استغلال جيد للمساحة"
+      ],
+      "complementaryRecommendations": [
+        "مرآة بسيطة",
+        "خلاط عملي"
+      ]
+    }
+  },
+  {
+    "id": "washbasin-luxury-complete",
+    "departmentId": "washbasins",
+    "priority": 8,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "over-50000"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "وحدة مغاسل فاخرة متكاملة برخام مميز وخزائن مخصصة وإضاءة مخفية.",
+      "shortDescription": "حل متكامل لمن يريد تجربة فندقية وتفاصيل عالية الجودة.",
+      "whySelected": "الميزانية المرتفعة تسمح بتنسيق خامات فاخرة وإضاءة وإكسسوارات أكثر تميزًا.",
+      "keyBenefits": [
+        "مظهر فاخر",
+        "خامات أعلى جودة",
+        "إضاءة مميزة",
+        "تخصيص كامل"
+      ],
+      "complementaryRecommendations": [
+        "مرآة بإضاءة خلفية",
+        "خزائن مخصصة"
+      ]
+    }
+  },
+  {
+    "id": "aluminum-default",
+    "departmentId": "aluminum",
+    "priority": 10,
+    "conditions": [],
+    "recommendation": {
+      "recommendedProduct": "حل ألمنيوم مخصص حسب نوع المنتج ولون الإطار والزجاج وطريقة الفتح.",
+      "shortDescription": "حل ألمنيوم مخصص يراعي الأداء والشكل وسهولة الاستخدام.",
+      "whySelected": "تحدد اختيارات الألمنيوم متطلبات الأداء والمظهر وسهولة الاستخدام للمشروع.",
+      "keyBenefits": [
+        "هيكل متين",
+        "خيارات تشطيب مودرن",
+        "قليل الصيانة",
+        "مناسب للفتحات المخصصة"
+      ],
+      "complementaryRecommendations": [
+        "ترقية العزل الحراري",
+        "تشطيب إكسسوارات فاخر"
+      ]
+    }
+  },
+  {
+    "id": "aluminum-economical-standard",
+    "departmentId": "aluminum",
+    "priority": 9,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "under-5000"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "حل ألمنيوم قياسي بتشطيب عملي وتكلفة مناسبة.",
+      "shortDescription": "خيار اقتصادي يركز على الوظيفة والمتانة الأساسية.",
+      "whySelected": "يناسب الميزانية المنخفضة ويقدم حلًا مباشرًا دون ترقيات زجاج أو عزل فاخرة.",
+      "keyBenefits": [
+        "تكلفة مناسبة",
+        "متانة جيدة",
+        "تنفيذ عملي",
+        "صيانة منخفضة"
+      ],
+      "complementaryRecommendations": [
+        "لون إطار قياسي",
+        "زجاج عملي"
+      ]
+    }
+  },
+  {
+    "id": "aluminum-premium-insulated",
+    "departmentId": "aluminum",
+    "priority": 8,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "over-50000"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "نظام ألمنيوم فاخر بعزل حراري وزجاج عالي الأداء.",
+      "shortDescription": "حل متقدم لمن يريد أداء أعلى ومظهرًا معماريًا مميزًا.",
+      "whySelected": "الميزانية المرتفعة تدعم خيارات العزل والزجاج المطور والإكسسوارات الأفضل.",
+      "keyBenefits": [
+        "عزل أفضل",
+        "أداء أعلى",
+        "تشطيب فاخر",
+        "راحة حرارية"
+      ],
+      "complementaryRecommendations": [
+        "زجاج مزدوج",
+        "إكسسوارات بريميوم"
+      ]
+    }
+  },
+  {
+    "id": "glass-default",
+    "departmentId": "glass",
+    "priority": 10,
+    "conditions": [],
+    "recommendation": {
+      "recommendedProduct": "حل زجاج مخصص متوافق مع نوع المنتج والسماكة والتشطيب والإكسسوارات المختارة.",
+      "shortDescription": "حل زجاجي مخصص يوازن بين الشفافية والخصوصية والمظهر.",
+      "whySelected": "تساعد تفاصيل الزجاج المختارة على تحقيق توازن بين الشفافية والخصوصية والسلامة والجودة البصرية.",
+      "keyBenefits": [
+        "مظهر شفاف فاخر",
+        "مقاس مخصص",
+        "خيارات خصوصية مرنة",
+        "تشطيب معماري نظيف"
+      ],
+      "complementaryRecommendations": [
+        "تشطيب إكسسوارات فاخر",
+        "زجاج خصوصية عند الحاجة"
+      ]
+    }
+  },
+  {
+    "id": "glass-economical-clear",
+    "departmentId": "glass",
+    "priority": 9,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "under-5000"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "حل زجاج شفاف عملي بسماكة مناسبة وتشطيب بسيط.",
+      "shortDescription": "خيار اقتصادي يركز على النقاء والوظيفة الأساسية.",
+      "whySelected": "يناسب الميزانية المنخفضة ويبتعد عن التشطيبات الخاصة والإكسسوارات الفاخرة.",
+      "keyBenefits": [
+        "تكلفة مناسبة",
+        "مظهر نظيف",
+        "سهولة صيانة",
+        "تنفيذ مباشر"
+      ],
+      "complementaryRecommendations": [
+        "إكسسوارات قياسية",
+        "حواف مصقولة"
+      ]
+    }
+  },
+  {
+    "id": "glass-luxury-architectural",
+    "departmentId": "glass",
+    "priority": 8,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "over-50000"
+      }
+    ],
+    "recommendation": {
+      "recommendedProduct": "حل زجاج معماري فاخر بتشطيب خاص وإكسسوارات مميزة.",
+      "shortDescription": "اختيار فاخر لمن يريد حضورًا بصريًا أقوى وتفاصيل تنفيذ أعلى.",
+      "whySelected": "الميزانية المرتفعة تسمح بتشطيبات زجاجية مميزة وإكسسوارات عالية الجودة.",
+      "keyBenefits": [
+        "مظهر معماري فاخر",
+        "تشطيبات خاصة",
+        "إكسسوارات عالية الجودة",
+        "تخصيص أكبر"
+      ],
+      "complementaryRecommendations": [
+        "زجاج عاكس أو مصنفر",
+        "إكسسوارات ذهبية أو سوداء مطفية"
+      ]
+    }
+  }
+]

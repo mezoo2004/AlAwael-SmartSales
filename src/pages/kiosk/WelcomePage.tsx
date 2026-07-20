@@ -2,22 +2,22 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, HelpCircle } from 'lucide-react';
 import { Button } from '../../components/ui';
-import { GeometricStrip, GeometricBackground, GeometricCorner } from '../../components/patterns/GeometricPatterns';
+import { BrandLogo, WelcomeAtmosphere } from '../../components/welcome/WelcomeAtmosphere';
 import { useSession } from '../../context/SessionContext';
 
 const WelcomePage: React.FC = () => {
   const navigate = useNavigate();
-  const { hasIncompleteSession, startNewSession, continuePreviousSession } = useSession();
+  const { hasIncompleteSession, startNewSession, continuePreviousSession, getContinuePath } = useSession();
 
   const handleStartNew = () => {
     startNewSession();
-    navigate('/kiosk/departments');
+    navigate('/kiosk/contact');
   };
 
   const handleContinue = () => {
     const success = continuePreviousSession();
     if (success) {
-      navigate('/kiosk/departments');
+      navigate(getContinuePath());
     }
   };
 
@@ -27,25 +27,16 @@ const WelcomePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-brand-light-gradient flex flex-col relative overflow-hidden">
-      {/* Background Pattern */}
-      <GeometricBackground opacity={0.03} />
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      {/* Premium architectural atmosphere (welcome-only) */}
+      <WelcomeAtmosphere />
 
-      {/* Top Pattern Strip */}
-      <GeometricStrip variant="compact" />
-
-      {/* Corner Decorations */}
-      <GeometricCorner position="top-right" />
-      <GeometricCorner position="bottom-left" />
-
-      {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="max-w-4xl w-full text-center relative z-10">
-          {/* Logo Placeholder */}
-          <div className="mb-12">
-            <div className="inline-flex items-center justify-center w-24 h-24 bg-brand-orange-gradient rounded-3xl shadow-xl">
-              <span className="text-white text-4xl font-bold">AW</span>
-            </div>
+      {/* Main Content — unchanged copy & actions */}
+      <div className="flex-1 flex items-center justify-center px-8 py-[95px] opacity-100 relative z-10">
+        <div className="max-w-4xl w-full text-center welcome-content-fade">
+          {/* Company logo */}
+          <div className="mb-8 flex justify-center">
+            <BrandLogo priority />
           </div>
 
           {/* Main Heading */}
@@ -94,23 +85,40 @@ const WelcomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Pattern Strip */}
-      <GeometricStrip variant="compact" />
-
-      {/* Subtle gradient animation */}
+      {/* Subtle welcome-only motion */}
       <style>{`
-        @keyframes gradient-shift {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.1; }
+        @keyframes welcome-glow-drift {
+          0%, 100% { opacity: 0.45; transform: translate3d(0, 0, 0) scale(1); }
+          50% { opacity: 0.7; transform: translate3d(2%, -1%, 0) scale(1.04); }
+        }
+        @keyframes welcome-facade-shift {
+          0%, 100% { transform: translate3d(0, 0, 0); }
+          50% { transform: translate3d(-1.2%, 0.4%, 0); }
+        }
+        @keyframes welcome-content-in {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .welcome-orange-glow {
+          background: radial-gradient(circle at 28% 68%, rgba(255, 90, 0, 0.07) 0%, transparent 42%),
+                      radial-gradient(circle at 78% 24%, rgba(255, 90, 0, 0.045) 0%, transparent 38%);
+          animation: welcome-glow-drift 14s ease-in-out infinite;
+        }
+        .welcome-facade-drift {
+          animation: welcome-facade-shift 30s ease-in-out infinite;
+          will-change: transform;
+        }
+        .welcome-content-fade {
+          animation: welcome-content-in 0.7s ease-out both;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .welcome-orange-glow,
+          .welcome-facade-drift,
+          .welcome-content-fade {
+            animation: none !important;
+          }
         }
       `}</style>
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 30% 70%, rgba(255, 90, 0, 0.05) 0%, transparent 50%)',
-          animation: 'gradient-shift 8s ease-in-out infinite',
-        }}
-      />
     </div>
   );
 };

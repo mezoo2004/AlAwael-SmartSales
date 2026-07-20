@@ -29,6 +29,21 @@ const generationSteps = [
   'نجهّز التصاميم للعرض',
 ];
 
+const budgetLabels: Record<string, string> = {
+  'under-5000': 'أقل من 5,000 ريال',
+  '5000-10000': '5,000 - 10,000 ريال',
+  '10000-20000': '10,000 - 20,000 ريال',
+  '20000-50000': '20,000 - 50,000 ريال',
+  'over-50000': 'أكثر من 50,000 ريال',
+};
+
+const priorityLabels: Record<string, string> = {
+  economy: 'أقل تكلفة',
+  balanced: 'أفضل قيمة',
+  quality: 'جودة عالية',
+  luxury: 'فخامة',
+};
+
 export class DemoAIProvider implements AIImageProvider {
   async generateDesigns(
     session: CustomerSession,
@@ -82,6 +97,12 @@ export class DemoAIProvider implements AIImageProvider {
 
   private customizeDescription(baseDescription: string, session: CustomerSession): string {
     const style = session.answers?.design_style;
+    const budget = typeof session.answers?.budget_intelligence === 'string'
+      ? budgetLabels[session.answers.budget_intelligence] || session.answers.budget_intelligence
+      : null;
+    const priority = typeof session.answers?.budgetPriority === 'string'
+      ? priorityLabels[session.answers.budgetPriority] || session.answers.budgetPriority
+      : null;
 
     let customized = baseDescription;
 
@@ -97,7 +118,34 @@ export class DemoAIProvider implements AIImageProvider {
       }
     }
 
+    const budgetGuidance = this.getBudgetPriorityGuidance(session);
+    if (budget && priority) {
+      customized = `${customized} مع مراعاة ميزانية العميل (${budget}) وأولوية الاستثمار (${priority})، ${budgetGuidance}`;
+    }
+
     return customized;
+  }
+
+  private getBudgetPriorityGuidance(session: CustomerSession): string {
+    const priority = session.answers?.budgetPriority;
+
+    if (priority === 'economy') {
+      return 'مع تجنب المبالغة في العناصر الفاخرة والتركيز على البدائل الذكية والتكلفة العملية.';
+    }
+
+    if (priority === 'balanced') {
+      return 'مع اختيار خامات عالية القيمة تحقق توازنًا واضحًا بين الجودة والسعر.';
+    }
+
+    if (priority === 'quality') {
+      return 'مع رفع جودة الخامات والتشطيبات ضمن حدود الميزانية المختارة.';
+    }
+
+    if (priority === 'luxury') {
+      return 'مع عدم توليد تصميم رخيص والاتجاه إلى خامات وإكسسوارات وتشطيبات فاخرة تناسب الميزانية.';
+    }
+
+    return 'مع احترام حدود الميزانية وأولوية العميل.';
   }
 
   private applyModifications(description: string, modifications: Record<string, unknown>): string {

@@ -1,0 +1,213 @@
+[
+  {
+    "id": "aluminum-kitchen-complements",
+    "departmentId": "aluminum",
+    "priority": 100,
+    "conditions": [
+      {
+        "questionId": "product_type",
+        "operator": "equals",
+        "value": "kitchens"
+      }
+    ],
+    "products": [
+      "حوض مطبخ مطابق للتصميم",
+      "خلاط مطبخ بتشطيب متناسق",
+      "إضاءة LED عملية أسفل الخزائن"
+    ]
+  },
+  {
+    "id": "marble-kitchen-complements",
+    "departmentId": "marble",
+    "priority": 100,
+    "conditions": [
+      {
+        "questionId": "usage",
+        "operator": "contains",
+        "value": "kitchen"
+      }
+    ],
+    "products": [
+      "بروفايل حافة مناسب لسطح المطبخ",
+      "جدار رخامي مطابق خلف السطح",
+      "إضاءة خطية دافئة لإبراز العروق"
+    ]
+  },
+  {
+    "id": "marble-premium-complements",
+    "departmentId": "marble",
+    "priority": 90,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "over-50000"
+      }
+    ],
+    "products": [
+      "تنسيق ألواح رخام متناظر",
+      "حافة مخصصة بتفصيل فاخر"
+    ]
+  },
+  {
+    "id": "wpc-door-core-complements",
+    "departmentId": "wpc-doors",
+    "priority": 100,
+    "conditions": [
+      {
+        "questionId": "door_type",
+        "operator": "exists"
+      }
+    ],
+    "products": [
+      "مقبض متناسق مع لون الباب",
+      "إطار مطابق للتشطيب",
+      "مفصلات عالية الجودة"
+    ]
+  },
+  {
+    "id": "wpc-main-door-security-complements",
+    "departmentId": "wpc-doors",
+    "priority": 95,
+    "conditions": [
+      {
+        "questionId": "door_type",
+        "operator": "equals",
+        "value": "main-door"
+      }
+    ],
+    "products": [
+      "قفل ذكي",
+      "عين باب أو نظام دخول آمن"
+    ]
+  },
+  {
+    "id": "wpc-modern-style-complements",
+    "departmentId": "wpc-doors",
+    "priority": 80,
+    "conditions": [
+      {
+        "questionId": "design_style",
+        "operator": "equals",
+        "value": "modern"
+      }
+    ],
+    "products": [
+      "مقبض أسود مطفي",
+      "إطار مخفي لمظهر أكثر نظافة"
+    ]
+  },
+  {
+    "id": "glass-facade-complements",
+    "departmentId": "glass",
+    "priority": 100,
+    "conditions": [
+      {
+        "questionId": "product_type",
+        "operator": "equals",
+        "value": "facade"
+      }
+    ],
+    "products": [
+      "إكسسوارات تثبيت زجاجية فاخرة",
+      "فيلم حماية حراري",
+      "إضاءة خارجية لإبراز الواجهة"
+    ]
+  },
+  {
+    "id": "glass-shower-complements",
+    "departmentId": "glass",
+    "priority": 95,
+    "conditions": [
+      {
+        "questionId": "product_type",
+        "operator": "equals",
+        "value": "shower"
+      }
+    ],
+    "products": [
+      "مفصلات مقاومة للرطوبة",
+      "مانع تسريب شفاف",
+      "معالجة مقاومة للترسبات"
+    ]
+  },
+  {
+    "id": "glass-mirror-complements",
+    "departmentId": "glass",
+    "priority": 90,
+    "conditions": [
+      {
+        "questionId": "product_type",
+        "operator": "equals",
+        "value": "mirror"
+      }
+    ],
+    "products": [
+      "إضاءة خلفية مخفية",
+      "معالجة مقاومة للضباب",
+      "إطار معدني نحيف"
+    ]
+  },
+  {
+    "id": "washbasin-main-complements",
+    "departmentId": "washbasins",
+    "priority": 100,
+    "conditions": [
+      {
+        "questionId": "service_type",
+        "operator": "exists"
+      }
+    ],
+    "products": [
+      "خلاط متناسق مع التشطيب",
+      "مرآة مناسبة للمقاس",
+      "إضاءة عملية حول منطقة المغسلة"
+    ]
+  },
+  {
+    "id": "washbasin-modern-complements",
+    "departmentId": "washbasins",
+    "priority": 90,
+    "conditions": [
+      {
+        "questionId": "design_style",
+        "operator": "equals",
+        "value": "modern"
+      }
+    ],
+    "products": [
+      "مرآة بإضاءة LED مخفية",
+      "خلاط جداري بخطوط نظيفة"
+    ]
+  },
+  {
+    "id": "premium-budget-complements",
+    "priority": 50,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "over-50000"
+      }
+    ],
+    "products": [
+      "ترقية تشطيب فاخرة",
+      "إكسسوارات بريميوم متناسقة"
+    ]
+  },
+  {
+    "id": "economical-budget-complements",
+    "priority": 40,
+    "conditions": [
+      {
+        "questionId": "budget_intelligence",
+        "operator": "equals",
+        "value": "under-5000"
+      }
+    ],
+    "products": [
+      "بدائل عملية بتكلفة مناسبة",
+      "تشطيبات قياسية سهلة الصيانة"
+    ]
+  }
+]

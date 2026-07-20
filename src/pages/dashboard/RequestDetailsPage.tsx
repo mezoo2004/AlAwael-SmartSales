@@ -152,7 +152,9 @@ const RequestDetailsPage: React.FC = () => {
                   ? 'واتساب: مفضل'
                   : request.contactInfo.preferredContactMethod === 'call'
                     ? 'اتصال: مفضل'
-                    : 'رسالة: مفضلة'}
+                    : request.contactInfo.preferredContactMethod === 'sms'
+                      ? 'رسالة: مفضلة'
+                      : 'طريقة التواصل غير محددة'}
               </Button>
             </div>
           </Card>

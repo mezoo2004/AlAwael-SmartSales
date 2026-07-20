@@ -8,11 +8,11 @@ const KIOSK_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 const WARNING_TIME = 30 * 1000; // 30 seconds before timeout
 
 const kioskSteps = [
+  { id: 'contact', label: 'التواصل' },
   { id: 'department', label: 'القسم' },
   { id: 'details', label: 'التفاصيل' },
   { id: 'measurements', label: 'المقاسات' },
   { id: 'design', label: 'التصميم' },
-  { id: 'contact', label: 'التواصل' },
   { id: 'submit', label: 'الإرسال' },
 ];
 
@@ -31,8 +31,8 @@ export const KioskLayout: React.FC<KioskLayoutProps> = ({
 }) => {
   const navigate = useNavigate();
   const { resetSession } = useSession();
-  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const inactivityTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [remainingTime, setRemainingTime] = useState(30);
   const [showWarning, setShowWarning] = useState(false);
 
@@ -54,11 +54,9 @@ export const KioskLayout: React.FC<KioskLayoutProps> = ({
       setShowWarning(true);
       setRemainingTime(30);
 
-      // Start countdown
       countdownIntervalRef.current = setInterval(() => {
         setRemainingTime(prev => {
           if (prev <= 1) {
-            // Time's up - reset and redirect
             clearTimers();
             resetSession();
             navigate('/kiosk');
@@ -108,7 +106,6 @@ export const KioskLayout: React.FC<KioskLayoutProps> = ({
 
   return (
     <div className={`min-h-screen bg-brand-light-gradient flex flex-col ${className}`}>
-      {/* Header with Progress */}
       {showProgress && (
         <header className="bg-white shadow-md py-6 px-8">
           <div className="max-w-5xl mx-auto">
@@ -120,12 +117,10 @@ export const KioskLayout: React.FC<KioskLayoutProps> = ({
         </header>
       )}
 
-      {/* Main Content */}
       <main className="flex-1 flex flex-col">
         {children}
       </main>
 
-      {/* Inactivity Warning Dialog */}
       <ConfirmDialog
         isOpen={showWarning}
         onClose={continueSession}

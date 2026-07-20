@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" role="img" aria-label="?? ???? ????????">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7ed"/><stop offset="1" stop-color="#ffffff"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#292d32" flood-opacity=".16"/></filter></defs>
+  <rect width="180" height="180" rx="36" fill="url(#bg)"/><circle cx="146" cy="34" r="28" fill="#ff5a00" opacity=".14"/><circle cx="34" cy="146" r="30" fill="#ff5a00" opacity=".1"/>
+  <g filter="url(#s)"><path d="M90 34c-24 0-43 18-43 42 0 31 43 70 43 70s43-39 43-70c0-24-19-42-43-42Z" fill="white" stroke="#292d32" stroke-width="7"/><circle cx="90" cy="76" r="15" fill="#ff5a00" opacity=".2" stroke="#ff5a00" stroke-width="6"/><path d="M65 132h50" stroke="#ff5a00" stroke-width="8" stroke-linecap="round"/></g>
+  <text x="90" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#292d32" opacity=".72">?? ???? ????????</text>
+</svg>

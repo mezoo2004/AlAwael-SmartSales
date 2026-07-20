@@ -1,14 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FileText, Clock, DollarSign, Phone, CheckCircle, TrendingUp } from 'lucide-react';
+import { FileText, Clock, DollarSign, Phone, CheckCircle, TrendingUp, UserX } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout';
 import { Card } from '../../components/ui';
 import { mockRequests, getStatusConfig, departments } from '../../data';
+import {
+  fetchIncompleteLeads,
+  IncompleteLeadView,
+  isSupabaseConfigured,
+} from '../../services/leadService';
+import { formatPhoneDisplay } from '../../utils/phone';
+import { getJourneyStepLabel } from '../../utils/journeySteps';
 
 const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
+  const [incompleteLeads, setIncompleteLeads] = useState<IncompleteLeadView[]>([]);
 
-  // Calculate stats
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+    let cancelled = false;
+    void fetchIncompleteLeads()
+      .then((data) => {
+        if (!cancelled) setIncompleteLeads(data);
+      })
+      .catch(() => {
+        if (!cancelled) setIncompleteLeads([]);
+      });
+    return () => { cancelled = true; };
+  }, []);
+
   const stats = {
     new: mockRequests.filter(r => r.status === 'new').length,
     needsFollowUp: mockRequests.filter(r => r.status === 'needs-follow-up').length,
@@ -41,13 +61,11 @@ const DashboardPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-brand-dark mb-2">لوحة التحكم</h1>
         <p className="text-brand-gray">نظرة عامة على الطلبات والإحصائيات</p>
       </div>
 
-      {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         {statCards.map((stat) => {
           const Icon = stat.icon;
@@ -73,9 +91,63 @@ const DashboardPage: React.FC = () => {
         })}
       </div>
 
-      {/* Recent Requests */}
+      <Card padding="none" className="mb-8">
+        <div className="px-6 py-4 border-b border-brand-light flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <UserX className="w-5 h-5 text-amber-600" />
+            <h2 className="text-xl font-bold text-brand-dark">عملاء لم يكملوا الطلب</h2>
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+              {incompleteLeads.length}
+            </span>
+          </div>
+          <button
+            onClick={() => navigate('/dashboard/incomplete-leads')}
+            className="text-brand-orange font-medium hover:underline"
+          >
+            عرض الكل
+          </button>
+        </div>
+        {incompleteLeads.length === 0 ? (
+          <div className="px-6 py-8 text-center text-brand-gray">
+            لا يوجد عملاء غير مكتملين حاليًا
+          </div>
+        ) : (
+          <div className="divide-y divide-brand-light">
+            {incompleteLeads.slice(0, 5).map((lead) => (
+              <div
+                key={lead.id}
+                onClick={() => navigate(`/dashboard/incomplete-leads/${lead.id}`)}
+                className="px-6 py-4 hover:bg-brand-light/50 cursor-pointer transition-colors"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="text-lg font-bold text-brand-dark">{lead.fullName}</span>
+                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                        طلب غير مكتمل
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-brand-gray">
+                      <span>{getJourneyStepLabel(lead.currentStep)}</span>
+                      <span>•</span>
+                      <span>{lead.city || '—'}</span>
+                      <span>•</span>
+                      <span>{formatDate(lead.lastActivityAt)}</span>
+                    </div>
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-medium text-brand-dark direction-ltr">
+                      {formatPhoneDisplay(lead.phoneE164)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Requests Table */}
         <div className="lg:col-span-2">
           <Card padding="none">
             <div className="px-6 py-4 border-b border-brand-light">
@@ -117,8 +189,8 @@ const DashboardPage: React.FC = () => {
                         </div>
                       </div>
                       <div className="text-left">
-                        <p className="text-sm font-medium text-brand-dark">
-                          {request.contactInfo.phone}
+                        <p className="text-sm font-medium text-brand-dark direction-ltr">
+                          {formatPhoneDisplay(request.contactInfo.phone)}
                         </p>
                       </div>
                     </div>
@@ -137,7 +209,6 @@ const DashboardPage: React.FC = () => {
           </Card>
         </div>
 
-        {/* Department Breakdown */}
         <div>
           <Card padding="lg">
             <h2 className="text-xl font-bold text-brand-dark mb-6">الطلبات حسب القسم</h2>
