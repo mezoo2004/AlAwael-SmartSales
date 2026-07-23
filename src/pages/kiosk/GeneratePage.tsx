@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { KioskLayout } from '../../components/layout';
 import { WelcomeAtmosphere } from '../../components/welcome/WelcomeAtmosphere';
@@ -17,18 +17,23 @@ const GeneratePage: React.FC = () => {
   const navigate = useNavigate();
   const { session, setGeneratedDesigns } = useSession();
   const [progress, setProgress] = useState({ step: 0, total: 5, message: '' });
+  const hasGeneratedRef = useRef(false);
 
   useEffect(() => {
     const generate = async () => {
       if (!session) return;
+      if (hasGeneratedRef.current) return;
+      hasGeneratedRef.current = true;
 
       try {
         const designs = await aiProvider.generateDesigns(session, (p) => {
           setProgress(p);
         });
-        setGeneratedDesigns(designs);
+        console.log('AI generated designs before Supabase persistence', designs);
+        await setGeneratedDesigns(designs);
         navigate('/kiosk/designs');
       } catch (error) {
+        hasGeneratedRef.current = false;
         console.error('Generation failed:', error);
       }
     };

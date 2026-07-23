@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, User, Phone, MapPin, MessageCircle } from 'lucide-react';
 import { KioskLayout } from '../../components/layout';
 import { Button } from '../../components/ui';
+import { DesignImage } from '../../components/kiosk/DesignImage';
 import { useSession } from '../../context/SessionContext';
 import { getDepartmentById } from '../../data';
 import { maskPhone, formatPhoneDisplay } from '../../utils/phone';
@@ -46,7 +47,17 @@ const FinalReviewPage: React.FC = () => {
     : null;
 
   const selectedDesign = useMemo(
-    () => session?.generatedDesigns.find((d) => d.id === session.selectedDesignId),
+    () => {
+      const design = session?.generatedDesigns.find((d) => d.id === session.selectedDesignId);
+      console.log('Final review selected design lookup', {
+        selectedDesignId: session?.selectedDesignId,
+        generatedDesignId: design?.generatedDesignId ?? null,
+        imageUrl: design?.imageUrl ?? null,
+        prompt: design?.prompt ?? null,
+        generatedDesigns: session?.generatedDesigns || [],
+      });
+      return design;
+    },
     [session]
   );
 
@@ -64,6 +75,8 @@ const FinalReviewPage: React.FC = () => {
       const message =
         error instanceof LeadPersistenceError
           ? error.message
+          : error instanceof Error
+            ? error.message
           : 'تعذر إرسال الطلب حاليًا. تحقق من الاتصال وحاول مرة أخرى.';
       setSubmitError(message);
     } finally {
@@ -154,8 +167,9 @@ const FinalReviewPage: React.FC = () => {
             </div>
             {selectedDesign && (
               <div className="rounded-xl overflow-hidden">
-                <img
-                  src={selectedDesign.thumbnailUrl || selectedDesign.imageUrl}
+                <DesignImage
+                  design={selectedDesign}
+                  projectId={session?.projectId}
                   alt={selectedDesign.title}
                   className="w-full h-48 object-cover"
                 />

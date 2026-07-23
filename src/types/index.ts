@@ -87,10 +87,21 @@ export interface ModificationRequest {
 
 export interface GeneratedDesign {
   id: string;
+  /** Remote Supabase generated_designs UUID */
+  generatedDesignId?: string;
+  /**
+   * Display URL for the current session (demo HTTP URL, legacy URL, or temporary signed URL).
+   * For private Storage designs, prefer storagePath + fresh signed URL resolution.
+   */
   imageUrl: string;
   thumbnailUrl: string;
+  /** Canonical permanent private Storage object path when available */
+  storagePath?: string;
+  /** demo | openai | … */
+  source?: string;
   title: string;
   description: string;
+  prompt?: string;
   materials: string[];
   colors: string[];
   modifications?: GeneratedDesign[];
@@ -121,6 +132,8 @@ export interface CustomerSession {
   contactInfo: ContactInfo | null;
   /** Remote Supabase customer UUID */
   customerId: string | null;
+  /** Remote Supabase projects UUID */
+  projectId: string | null;
   /** Remote Supabase lead_sessions UUID */
   leadSessionId: string | null;
   remoteLeadStatus: 'incomplete' | 'completed' | null;
@@ -137,6 +150,14 @@ export interface ContactInfo {
   /** Stored in E.164 (+9665XXXXXXXX) after save */
   phone: string;
   city?: string;
+  district?: string;
+  street?: string;
+  region?: string;
+  country?: string;
+  latitude?: number;
+  longitude?: number;
+  accuracy?: number;
+  googleMapsUrl?: string;
   preferredContactMethod?: PreferredContactMethod;
   privacyAccepted: boolean;
   marketingConsent: boolean;

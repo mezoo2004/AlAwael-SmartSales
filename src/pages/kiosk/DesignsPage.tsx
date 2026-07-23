@@ -1,24 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Check, Maximize2, Edit2 } from 'lucide-react';
 import { KioskLayout } from '../../components/layout';
 import { Button, Modal } from '../../components/ui';
+import { DesignImage } from '../../components/kiosk/DesignImage';
 import { useSession } from '../../context/SessionContext';
 import { GeneratedDesign, ModificationRequest } from '../../types';
 
 const DesignsPage: React.FC = () => {
   const navigate = useNavigate();
   const { session, selectDesign, addModification } = useSession();
-  const [designs] = useState(session?.generatedDesigns || []);
-  const [selectedDesignId, setSelectedDesignId] = useState<string | null>(null);
+  const designs = session?.generatedDesigns || [];
+  const projectId = session?.projectId || null;
+  const [selectedDesignId, setSelectedDesignId] = useState<string | null>(session?.selectedDesignId || null);
   const [showImageViewer, setShowImageViewer] = useState(false);
   const [viewingDesign, setViewingDesign] = useState<GeneratedDesign | null>(null);
   const [showModifyPanel, setShowModifyPanel] = useState(false);
   const [modifyingDesign, setModifyingDesign] = useState<GeneratedDesign | null>(null);
 
-  const handleSelectDesign = (designId: string) => {
-    setSelectedDesignId(designId);
-    selectDesign(designId);
+  useEffect(() => {
+    setSelectedDesignId(session?.selectedDesignId || null);
+  }, [session?.selectedDesignId]);
+
+  const handleSelectDesign = async (designId: string) => {
+    try {
+      await selectDesign(designId);
+      setSelectedDesignId(designId);
+    } catch (error) {
+      console.error('Design selection failed:', error);
+    }
   };
 
   const handleViewFullscreen = (design: GeneratedDesign) => {
@@ -66,8 +76,9 @@ const DesignsPage: React.FC = () => {
               >
                 {/* Image */}
                 <div className="aspect-[4/3] relative overflow-hidden">
-                  <img
-                    src={design.imageUrl}
+                  <DesignImage
+                    design={design}
+                    projectId={projectId}
                     alt={design.title}
                     className={`w-full h-full object-cover transition-transform duration-500
                       ${selectedDesignId === design.id ? 'scale-105' : ''}
@@ -151,8 +162,9 @@ const DesignsPage: React.FC = () => {
       >
         {viewingDesign && (
           <div className="min-h-[80vh] flex items-center justify-center">
-            <img
-              src={viewingDesign.imageUrl}
+            <DesignImage
+              design={viewingDesign}
+              projectId={projectId}
               alt={viewingDesign.title}
               className="max-w-full max-h-[80vh] object-contain"
             />

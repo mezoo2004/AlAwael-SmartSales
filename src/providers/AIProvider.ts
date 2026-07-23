@@ -1,5 +1,17 @@
+/**
+ * Demo AI provider — keeps the existing loading/progress UX while routing
+ * generation through designGenerationService (DEMO MODE).
+ *
+ * Never calls OpenAI. Never requires or reads an API key.
+ */
+
 import { GeneratedDesign, CustomerSession } from '../types';
 import { getDesignsForDepartment } from '../data';
+import {
+  buildGenerationRequestFromSession,
+  generateDesign,
+  toGeneratedDesigns,
+} from '../services/designGenerationService';
 
 export interface AIGenerationProgress {
   step: number;
@@ -29,27 +41,12 @@ const generationSteps = [
   'نجهّز التصاميم للعرض',
 ];
 
-const budgetLabels: Record<string, string> = {
-  'under-5000': 'أقل من 5,000 ريال',
-  '5000-10000': '5,000 - 10,000 ريال',
-  '10000-20000': '10,000 - 20,000 ريال',
-  '20000-50000': '20,000 - 50,000 ريال',
-  'over-50000': 'أكثر من 50,000 ريال',
-};
-
-const priorityLabels: Record<string, string> = {
-  economy: 'أقل تكلفة',
-  balanced: 'أفضل قيمة',
-  quality: 'جودة عالية',
-  luxury: 'فخامة',
-};
-
 export class DemoAIProvider implements AIImageProvider {
   async generateDesigns(
     session: CustomerSession,
     onProgress?: AIProgressCallback
   ): Promise<GeneratedDesign[]> {
-    // Simulate AI generation with progressive updates
+    // Preserve the existing progressive loading experience
     for (let i = 0; i < generationSteps.length; i++) {
       await this.delay(800 + Math.random() * 600);
 
@@ -62,16 +59,15 @@ export class DemoAIProvider implements AIImageProvider {
       }
     }
 
-    // Return demo designs based on department
-    const departmentId = session.departmentId || 'washbasins';
-    const baseDesigns = getDesignsForDepartment(departmentId);
+    const request = buildGenerationRequestFromSession(session);
+    const result = await generateDesign(request);
 
-    // Apply session-specific modifications
-    return baseDesigns.map((design, index) => ({
-      ...design,
-      id: `${design.id}-${Date.now()}-${index}`,
-      description: this.customizeDescription(design.description, session),
-    }));
+    if (!result.success) {
+      throw new Error(result.error?.message || 'تعذر توليد التصاميم في وضع التجربة.');
+    }
+
+    // Attach the built prompt to each design for generated_designs persistence
+    return toGeneratedDesigns(result.images, result.prompt);
   }
 
   async regenerateDesign(
@@ -79,73 +75,23 @@ export class DemoAIProvider implements AIImageProvider {
     designId: string,
     modifications: Record<string, unknown>
   ): Promise<GeneratedDesign> {
-    // Simulate regeneration
     await this.delay(1500);
 
     const departmentId = session.departmentId || 'washbasins';
     const baseDesigns = getDesignsForDepartment(departmentId);
     const originalDesign = baseDesigns.find(d => designId.includes(d.id)) || baseDesigns[0];
+    const request = buildGenerationRequestFromSession(session);
+    const result = await generateDesign(request);
+    const prompt = result.prompt || originalDesign.prompt;
 
     return {
       ...originalDesign,
       id: `${originalDesign.id}-modified-${Date.now()}`,
       title: `${originalDesign.title} (معدل)`,
       description: this.applyModifications(originalDesign.description, modifications),
+      prompt,
       modifications: originalDesign.modifications || [],
     };
-  }
-
-  private customizeDescription(baseDescription: string, session: CustomerSession): string {
-    const style = session.answers?.design_style;
-    const budget = typeof session.answers?.budget_intelligence === 'string'
-      ? budgetLabels[session.answers.budget_intelligence] || session.answers.budget_intelligence
-      : null;
-    const priority = typeof session.answers?.budgetPriority === 'string'
-      ? priorityLabels[session.answers.budgetPriority] || session.answers.budgetPriority
-      : null;
-
-    let customized = baseDescription;
-
-    if (style && typeof style === 'string') {
-      const styleMap: Record<string, string> = {
-        modern: 'مودرن',
-        luxury: 'فاخر',
-        minimal: 'بسيط',
-        hotel: 'فندقي',
-      };
-      if (styleMap[style]) {
-        customized = customized.replace(/تصميم \w+/, `تصميم ${styleMap[style]}`);
-      }
-    }
-
-    const budgetGuidance = this.getBudgetPriorityGuidance(session);
-    if (budget && priority) {
-      customized = `${customized} مع مراعاة ميزانية العميل (${budget}) وأولوية الاستثمار (${priority})، ${budgetGuidance}`;
-    }
-
-    return customized;
-  }
-
-  private getBudgetPriorityGuidance(session: CustomerSession): string {
-    const priority = session.answers?.budgetPriority;
-
-    if (priority === 'economy') {
-      return 'مع تجنب المبالغة في العناصر الفاخرة والتركيز على البدائل الذكية والتكلفة العملية.';
-    }
-
-    if (priority === 'balanced') {
-      return 'مع اختيار خامات عالية القيمة تحقق توازنًا واضحًا بين الجودة والسعر.';
-    }
-
-    if (priority === 'quality') {
-      return 'مع رفع جودة الخامات والتشطيبات ضمن حدود الميزانية المختارة.';
-    }
-
-    if (priority === 'luxury') {
-      return 'مع عدم توليد تصميم رخيص والاتجاه إلى خامات وإكسسوارات وتشطيبات فاخرة تناسب الميزانية.';
-    }
-
-    return 'مع احترام حدود الميزانية وأولوية العميل.';
   }
 
   private applyModifications(description: string, modifications: Record<string, unknown>): string {

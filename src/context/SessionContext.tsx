@@ -12,10 +12,16 @@ import {
 import {
   saveCustomerAndIncompleteLead,
   updateLeadProgress,
-  completeLeadWithRequest,
   LeadPersistenceError,
   isSupabaseConfigured,
 } from '../services/leadService';
+import {
+  finalizeProjectOrder,
+  persistGeneratedDesigns,
+  saveProjectAnswer,
+  selectGeneratedDesign,
+  updateProjectMetadata,
+} from '../services/projectService';
 import { normalizeSaudiPhone } from '../utils/phone';
 import { CONSENT_TEXT_VERSION } from '../constants/consent';
 
@@ -48,10 +54,11 @@ interface SessionContextType {
   setMeasurements: (measurements: Measurement) => void;
   addUploadedImage: (image: UploadedImage) => void;
   removeUploadedImage: (imageId: string) => void;
-  setGeneratedDesigns: (designs: GeneratedDesign[]) => void;
-  selectDesign: (designId: string | null) => void;
+  setGeneratedDesigns: (designs: GeneratedDesign[]) => Promise<void>;
+  selectDesign: (designId: string | null) => Promise<void>;
   addModification: (modification: ModificationRequest) => void;
   setContactInfo: (info: ContactInfo) => void;
+  setRemoteCustomerProject: (customerId: string, projectId: string) => void;
   /** Save contact remotely as incomplete lead (required before departments) */
   saveContactAsLead: (info: ContactInfo) => Promise<void>;
   /** Update remote customer contact without creating a new lead */
@@ -81,6 +88,7 @@ const createNewSession = (): CustomerSession => ({
   modificationHistory: [],
   contactInfo: null,
   customerId: null,
+  projectId: null,
   leadSessionId: null,
   remoteLeadStatus: null,
   status: 'in-progress',
@@ -92,6 +100,7 @@ const normalizeHydratedSession = (parsed: CustomerSession): CustomerSession => (
   ...parsed,
   journeyStep: parsed.journeyStep || (parsed.contactInfo ? 'customer_information_completed' : 'started'),
   customerId: parsed.customerId ?? null,
+  projectId: parsed.projectId ?? null,
   leadSessionId: parsed.leadSessionId ?? null,
   remoteLeadStatus: parsed.remoteLeadStatus ?? null,
   createdAt: new Date(parsed.createdAt),
@@ -179,6 +188,12 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({ child
       syncLeadProgress(prev.leadSessionId, 'department_selected', {
         selectedDepartment: departmentId,
       });
+      if (prev.projectId) {
+        void updateProjectMetadata(prev.projectId, {
+          department: departmentId,
+          status: 'in_progress',
+        });
+      }
       return next;
     });
   }, [syncLeadProgress]);
@@ -200,6 +215,15 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (!prev) return null;
       const answers = { ...prev.answers, [questionId]: value };
       syncLeadProgress(prev.leadSessionId, 'questionnaire_in_progress', { answers });
+      if (prev.projectId) {
+        void saveProjectAnswer(prev.projectId, questionId, value);
+        if (questionId === 'budget_intelligence' && typeof value === 'string') {
+          void updateProjectMetadata(prev.projectId, { budget_range: value });
+        }
+        if (questionId === 'budgetPriority' && typeof value === 'string') {
+          void updateProjectMetadata(prev.projectId, { priority: value });
+        }
+      }
       return {
         ...prev,
         answers,
@@ -214,6 +238,11 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (!prev) return null;
       const merged = { ...prev.answers, ...answers };
       syncLeadProgress(prev.leadSessionId, 'questionnaire_in_progress', { answers: merged });
+      if (prev.projectId) {
+        Object.entries(answers).forEach(([questionId, value]) => {
+          void saveProjectAnswer(prev.projectId!, questionId, value);
+        });
+      }
       return { ...prev, answers: merged, updatedAt: new Date() };
     });
   }, [syncLeadProgress]);
@@ -226,6 +255,9 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setSession(prev => {
       if (!prev) return null;
       syncLeadProgress(prev.leadSessionId, 'questionnaire_in_progress', { measurements });
+      if (prev.projectId) {
+        void updateProjectMetadata(prev.projectId, { dimensions: measurements as unknown as Record<string, unknown> });
+      }
       return { ...prev, measurements, updatedAt: new Date() };
     });
   }, [syncLeadProgress]);
@@ -246,29 +278,73 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({ child
     } : null);
   }, []);
 
-  const setGeneratedDesigns = useCallback((designs: GeneratedDesign[]) => {
+  const setGeneratedDesigns = useCallback(async (designs: GeneratedDesign[]) => {
+    const current = sessionRef.current;
+    if (!current) return;
+
+    let persistedDesigns = designs;
+    if (current.projectId) {
+      persistedDesigns = await persistGeneratedDesigns(current.projectId, designs);
+    }
+    console.log('Generated designs stored in session', persistedDesigns);
+
     setSession(prev => {
       if (!prev) return null;
-      syncLeadProgress(prev.leadSessionId, 'designs_generated');
-      return {
+      const next = {
         ...prev,
-        generatedDesigns: designs,
-        journeyStep: 'designs_generated',
+        generatedDesigns: persistedDesigns,
+        selectedDesignId: null,
+        journeyStep: 'designs_generated' as JourneyStep,
         updatedAt: new Date(),
       };
+      syncLeadProgress(prev.leadSessionId, 'designs_generated');
+      sessionRef.current = next;
+      return next;
     });
   }, [syncLeadProgress]);
 
-  const selectDesign = useCallback((designId: string | null) => {
+  const selectDesign = useCallback(async (designId: string | null) => {
+    const current = sessionRef.current;
+    if (!current) return;
+
+    const selectedDesign = designId
+      ? current.generatedDesigns.find(design => design.id === designId)
+      : null;
+
+    console.log('Selecting generated design', {
+      localDesignId: designId,
+      generatedDesignId: selectedDesign?.generatedDesignId ?? null,
+      projectId: current.projectId,
+      selectedDesign,
+    });
+
+    if (designId && !selectedDesign) {
+      throw new LeadPersistenceError('التصميم المختار غير موجود في الجلسة', 'NO_SELECTED_DESIGN');
+    }
+
+    if (designId && current.projectId && selectedDesign?.generatedDesignId) {
+      await selectGeneratedDesign({
+        projectId: current.projectId,
+        generatedDesignId: selectedDesign.generatedDesignId,
+      });
+    }
+
     setSession(prev => {
       if (!prev) return null;
-      syncLeadProgress(prev.leadSessionId, 'design_selected', { selectedDesignId: designId });
-      return {
+      const next = {
         ...prev,
         selectedDesignId: designId,
-        journeyStep: 'design_selected',
+        journeyStep: 'design_selected' as JourneyStep,
         updatedAt: new Date(),
       };
+      syncLeadProgress(prev.leadSessionId, 'design_selected', { selectedDesignId: designId });
+      sessionRef.current = next;
+      console.log('Selected design stored in session', {
+        selectedDesignId: designId,
+        selectedDesign: selectedDesign || null,
+        session: next,
+      });
+      return next;
     });
   }, [syncLeadProgress]);
 
@@ -289,6 +365,26 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         journeyStep: 'customer_information_completed',
         updatedAt: new Date(),
       };
+    });
+  }, []);
+
+  const setRemoteCustomerProject = useCallback((customerId: string, projectId: string) => {
+    setSession(prev => {
+      const base = prev || createNewSession();
+      const next = {
+        ...base,
+        customerId,
+        projectId,
+        remoteLeadStatus: 'incomplete' as const,
+        updatedAt: new Date(),
+      };
+      console.log('Stored remote customer/project in session', {
+        customer: { id: customerId },
+        project: { id: projectId, customer_id: customerId },
+        session: next,
+      });
+      sessionRef.current = next;
+      return next;
     });
   }, []);
 
@@ -328,6 +424,7 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({ child
       ...prev,
       contactInfo: prepared,
       customerId: result.customerId,
+      projectId: prev.projectId,
       leadSessionId: result.leadSessionId,
       remoteLeadStatus: 'incomplete',
       journeyStep: 'customer_information_completed',
@@ -361,21 +458,32 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if (!current?.contactInfo) {
       throw new LeadPersistenceError('بيانات التواصل غير مكتملة', 'NO_CONTACT');
     }
-    if (!current.customerId || !current.leadSessionId) {
+    if (!current.customerId) {
       throw new LeadPersistenceError(
-        'تعذر إكمال الطلب لأن بيانات العميل لم تُحفظ عن بُعد.',
-        'NO_REMOTE_LEAD'
+        'تعذر إكمال الطلب لأن رقم العميل في Supabase غير متوفر.',
+        'NO_REMOTE_CUSTOMER'
       );
     }
+    if (!current.projectId) {
+      throw new LeadPersistenceError(
+        'تعذر إكمال الطلب لأن رقم المشروع في Supabase غير متوفر.',
+        'NO_REMOTE_PROJECT'
+      );
+    }
+    console.log('Submitting session with remote IDs', {
+      customerId: current.customerId,
+      projectId: current.projectId,
+      leadSessionId: current.leadSessionId,
+    });
 
     const requestNumber = generateRequestNumber();
-    await completeLeadWithRequest({
+    const result = await finalizeProjectOrder({
       customerId: current.customerId,
-      leadSessionId: current.leadSessionId,
+      projectId: current.projectId,
       session: current,
-      contact: current.contactInfo,
       requestNumber,
     });
+    console.log('Final project order submission result', result);
 
     setSession(prev => prev ? {
       ...prev,
@@ -455,6 +563,7 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({ child
       selectDesign,
       addModification,
       setContactInfo,
+      setRemoteCustomerProject,
       saveContactAsLead,
       updateSavedContact,
       submitSession,

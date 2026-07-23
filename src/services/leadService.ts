@@ -246,7 +246,7 @@ export async function updateLeadProgress(params: {
 
 export async function completeLeadWithRequest(params: {
   customerId: string;
-  leadSessionId: string;
+  leadSessionId?: string | null;
   session: CustomerSession;
   contact: ContactInfo;
   requestNumber: string;
@@ -273,46 +273,63 @@ export async function completeLeadWithRequest(params: {
     consentTextVersion: params.contact.consentTextVersion,
   };
 
-  const { data: request, error: requestError } = await supabase
+  const requestPayload = {
+    request_number: params.requestNumber,
+    customer_id: params.customerId,
+    lead_session_id: params.leadSessionId ?? null,
+    department_id: params.session.departmentId,
+    contact_snapshot: contactSnapshot,
+    answers: params.session.answers || {},
+    measurements: params.session.measurements || null,
+    uploaded_images: params.session.uploadedImages || [],
+    generated_designs: params.session.generatedDesigns || [],
+    selected_design_id: params.session.selectedDesignId,
+    modification_history: params.session.modificationHistory || [],
+    status: 'new',
+    source: LEAD_SOURCE,
+  };
+  console.log('Final sales request insert payload', requestPayload);
+
+  const requestResponse = await supabase
     .from('sales_requests')
-    .insert({
-      request_number: params.requestNumber,
-      customer_id: params.customerId,
-      lead_session_id: params.leadSessionId,
-      department_id: params.session.departmentId,
-      contact_snapshot: contactSnapshot,
-      answers: params.session.answers || {},
-      measurements: params.session.measurements || null,
-      uploaded_images: params.session.uploadedImages || [],
-      generated_designs: params.session.generatedDesigns || [],
-      selected_design_id: params.session.selectedDesignId,
-      modification_history: params.session.modificationHistory || [],
-      status: 'new',
-      source: LEAD_SOURCE,
-    })
+    .insert(requestPayload)
     .select('id, request_number')
     .single();
+  const { data: request, error: requestError } = requestResponse;
+  console.log('Final sales request Supabase response', requestResponse);
 
   if (requestError || !request) {
+    console.error('Final sales request Supabase error', requestResponse);
     throw new LeadPersistenceError(SAVE_ERROR_AR, requestError?.code);
   }
 
-  const { error: leadError } = await supabase
-    .from('lead_sessions')
-    .update({
-      status: 'completed',
-      current_step: 'request_submitted',
-      completed_request_id: request.id,
-      last_activity_at: now,
-      selected_department: params.session.departmentId,
-      answers: params.session.answers || {},
-      measurements: params.session.measurements || null,
-      selected_design_id: params.session.selectedDesignId,
-    })
-    .eq('id', params.leadSessionId);
+  if (params.leadSessionId) {
+    const leadResponse = await supabase
+      .from('lead_sessions')
+      .update({
+        status: 'completed',
+        current_step: 'request_submitted',
+        completed_request_id: request.id,
+        last_activity_at: now,
+        selected_department: params.session.departmentId,
+        answers: params.session.answers || {},
+        measurements: params.session.measurements || null,
+        selected_design_id: params.session.selectedDesignId,
+      })
+      .eq('id', params.leadSessionId);
+    const { error: leadError } = leadResponse;
+    console.log('Final lead session update Supabase response', leadResponse);
 
-  if (leadError) {
-    throw new LeadPersistenceError(SAVE_ERROR_AR, leadError.code);
+    if (leadError) {
+      console.error('Final lead session update Supabase error', leadResponse);
+      throw new LeadPersistenceError(SAVE_ERROR_AR, leadError.code);
+    }
+  } else {
+    console.log('No legacy lead session to update; final request used remote customer id only', {
+      customerId: params.customerId,
+      projectId: params.session.projectId,
+      requestId: request.id,
+    });
   }
 
   return { requestId: request.id, requestNumber: request.request_number };
